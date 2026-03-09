@@ -23,6 +23,17 @@ function App() {
     setDescription("");
   }
 
+  function deleteFile(id) {
+    setFiles(files.filter((file) => file.id !== id));
+  }
+
+  function handleEdit(
+    
+  ) {
+    setDescription(file.description);
+    setEditId(file.id);
+  }
+
   return (
     <>
       <input type="file" onChange={(event) => setFile(event.target.files[0])} />
@@ -31,7 +42,7 @@ function App() {
         placeholder="Description"
         value={description}
         onChange={(event) => setDescription(event.target.value)}
-        />
+      />
       <button onClick={handleUpload}>upload</button>
       <table>
         <thead>
@@ -45,17 +56,21 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          
+          {files.map((file) => (
+            <tr key={file.id}>
+              <td>{file.id}</td>
+              <td>{file.filename}</td>
+              <td>{file.filesize}</td>
+              <td>{file.uploadedAt}</td>
+              <td>{file.description}</td>
+              <td>
+                <button onClick={() => deleteFile(file.id)}>Delete</button>
+                <button onClick={() => handleEdit(file.id)}>Edit</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      ;
-        files.map(
-          (file) => file.id,
-          file.filename,
-          file.filesize,
-          file.uploadedAt,
-          file.description,
-        );
     </>
   );
 }
