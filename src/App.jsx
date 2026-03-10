@@ -1,42 +1,64 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
+// import { useState } from "react";
 function App() {
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState(null);
-
+  const fileInputRef = useRef(null);
   function handleUpload() {
-    if (!file) {
+    if (!file && !editId) {
       alert("Please upload a file");
       return;
     }
-    const filee = {
-      id: Date.now(),
-      filename: file.name,
-      filesize: (file.size / 1024).toFixed(2),
-      uploadedAt: new Date().toLocaleString(),
-      description: description,
-    };
-    setFiles([...files, filee]);
-    setFile(null);
+
+    if (editId) {
+      const updatedFiles = files.map((f) => {
+        if (f.id === editId) {
+          return {
+            ...f,
+            description: description,
+          };
+        }
+        return f;
+      });
+
+      setFiles(updatedFiles);
+    } else {
+      const newFile = {
+        id: Date.now(),
+        filename: file.name,
+        filesize: (file.size / 1024).toFixed(2),
+        uploadedAt: new Date().toLocaleString(),
+        description: description,
+      };
+
+      setFiles([...files, newFile]);
+    }
+
+    setEditId(null);
     setDescription("");
+    setFile(null);
+    fileInputRef.current.value = "";
   }
 
   function deleteFile(id) {
     setFiles(files.filter((file) => file.id !== id));
   }
 
-  function handleEdit(
-    
-  ) {
+  function handleEdit(file) {
     setDescription(file.description);
     setEditId(file.id);
   }
 
   return (
     <>
-      <input type="file" onChange={(event) => setFile(event.target.files[0])} />
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={(event) => setFile(event.target.files[0])}
+      />
       <input
         type="text"
         placeholder="Description"
@@ -64,8 +86,8 @@ function App() {
               <td>{file.uploadedAt}</td>
               <td>{file.description}</td>
               <td>
+                <button onClick={() => handleEdit(file)}>Edit</button>
                 <button onClick={() => deleteFile(file.id)}>Delete</button>
-                <button onClick={() => handleEdit(file.id)}>Edit</button>
               </td>
             </tr>
           ))}
