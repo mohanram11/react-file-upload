@@ -1,12 +1,19 @@
 import "./App.css";
-import { useState, useRef } from "react";
-// import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+
 function App() {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState(() => {
+    const storedFiles = localStorage.getItem("files");
+    return storedFiles ? JSON.parse(storedFiles) : [];
+  });
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState(null);
   const fileInputRef = useRef(null);
+  useEffect(() => {
+    localStorage.setItem("files", JSON.stringify(files));
+  }, [files]);
+
   function handleUpload() {
     if (!file && !editId) {
       alert("Please upload a file");
@@ -53,19 +60,25 @@ function App() {
   }
 
   return (
-    <>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={(event) => setFile(event.target.files[0])}
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-      />
-      <button onClick={handleUpload}>upload</button>
+    <div className="container">
+      <h2>File Upload Manager</h2>
+
+      <div className="form-section">
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={(event) => setFile(event.target.files[0])}
+        />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+        />
+        <button onClick={handleUpload}>
+          {editId ? "Update File" : "Upload File"}
+        </button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -93,7 +106,7 @@ function App() {
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
 
