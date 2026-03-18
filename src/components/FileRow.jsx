@@ -13,5 +13,4 @@ function FileRow({ file, handleEdit, deleteFile }) {
     </tr>
   );
 }
-
 export default FileRow;

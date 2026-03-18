@@ -2,18 +2,17 @@ import FileRow from "./FileRow";
 
 function FileTable({ files, handleEdit, deleteFile }) {
   return (
-    <table className="file-table">
+    <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Filename</th>
           <th>Filesize</th>
-          <th>Uploaded At</th>
+          <th>Uploded At</th>
           <th>Description</th>
           <th>Actions</th>
         </tr>
       </thead>
-
       <tbody>
         {files.map((file) => (
           <FileRow
@@ -27,5 +26,4 @@ function FileTable({ files, handleEdit, deleteFile }) {
     </table>
   );
 }
-
 export default FileTable;

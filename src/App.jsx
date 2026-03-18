@@ -1,5 +1,7 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
+import UploadForm from "./components/UploadForm";
+import FileTable from "./components/FileTable";
 
 function App() {
   const [files, setFiles] = useState(() => {
@@ -13,6 +15,8 @@ function App() {
   useEffect(() => {
     localStorage.setItem("files", JSON.stringify(files));
   }, [files]);
+
+  const newId = files.length > 0 ? Math.max(...files.map((f) => f.id)) + 1 : 1;
 
   function handleUpload() {
     if (!file && !editId) {
@@ -34,7 +38,7 @@ function App() {
       setFiles(updatedFiles);
     } else {
       const newFile = {
-        id: Date.now(),
+        id: newId,
         filename: file.name,
         filesize: (file.size / 1024).toFixed(2),
         uploadedAt: new Date().toLocaleString(),
@@ -62,50 +66,20 @@ function App() {
   return (
     <div className="container">
       <h2>File Upload Manager</h2>
+      <UploadForm
+        fileInputRef={fileInputRef}
+        setFile={setFile}
+        description={description}
+        setDescription={setDescription}
+        handleUpload={handleUpload}
+        editId={editId}
+      />
 
-      <div className="form-section">
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={(event) => setFile(event.target.files[0])}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-        <button onClick={handleUpload}>
-          {editId ? "Update File" : "Upload File"}
-        </button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Filename</th>
-            <th>Filesize</th>
-            <th>Uploded At</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {files.map((file) => (
-            <tr key={file.id}>
-              <td>{file.id}</td>
-              <td>{file.filename}</td>
-              <td>{file.filesize}</td>
-              <td>{file.uploadedAt}</td>
-              <td>{file.description}</td>
-              <td>
-                <button onClick={() => handleEdit(file)}>Edit</button>
-                <button onClick={() => deleteFile(file.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <FileTable
+        files={files}
+        handleEdit={handleEdit}
+        deleteFile={deleteFile}
+      />
     </div>
   );
 }
