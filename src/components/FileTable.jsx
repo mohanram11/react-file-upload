@@ -14,10 +14,11 @@ function FileTable({ files, handleEdit, deleteFile }) {
         </tr>
       </thead>
       <tbody>
-        {files.map((file) => (
+        {files.map((file, index) => (
           <FileRow
             key={file.id}
             file={file}
+            index={index}
             handleEdit={handleEdit}
             deleteFile={deleteFile}
           />

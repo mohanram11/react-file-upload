@@ -1,7 +1,7 @@
-function FileRow({ file, handleEdit, deleteFile }) {
+function FileRow({ file, handleEdit, index, deleteFile }) {
   return (
     <tr>
-      <td>{file.id}</td>
+      <td>{index + 1}</td>
       <td>{file.filename}</td>
       <td>{file.filesize}</td>
       <td>{file.uploadedAt}</td>
