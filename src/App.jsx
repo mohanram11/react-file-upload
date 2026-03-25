@@ -15,6 +15,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem("files", JSON.stringify(files));
   }, [files]);
+  const MAX_SIZE = 1 * 1024 * 1024;
 
   const newId = files.length > 0 ? Math.max(...files.map((f) => f.id)) + 1 : 1;
 
@@ -24,6 +25,10 @@ function App() {
       return;
     }
 
+    if (file && file.size > MAX_SIZE  ) {
+      alert("File size is too large");
+      return;
+    }
     if (editId) {
       const updatedFiles = files.map((f) => {
         if (f.id === editId) {
