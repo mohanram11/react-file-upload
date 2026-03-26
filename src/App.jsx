@@ -25,7 +25,7 @@ function App() {
       return;
     }
 
-    if (file && file.size > MAX_SIZE  ) {
+    if (file && file.size > MAX_SIZE) {
       alert("File size is too large");
       return;
     }
@@ -48,6 +48,7 @@ function App() {
         filesize: (file.size / 1024).toFixed(2),
         uploadedAt: new Date().toLocaleString(),
         description: description,
+        file: file,
       };
 
       setFiles([...files, newFile]);
@@ -68,6 +69,15 @@ function App() {
     setEditId(file.id);
   }
 
+  function handleDownload(file) {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="container">
       <h2>File Upload Manager</h2>
@@ -78,12 +88,14 @@ function App() {
         setDescription={setDescription}
         handleUpload={handleUpload}
         editId={editId}
+        handleDownload={handleDownload}
       />
 
       <FileTable
         files={files}
         handleEdit={handleEdit}
         deleteFile={deleteFile}
+        download={handleDownload}
       />
     </div>
   );

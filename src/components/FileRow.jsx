@@ -1,4 +1,4 @@
-function FileRow({ file, handleEdit, index, deleteFile }) {
+function FileRow({ file, handleEdit, index, deleteFile, download }) {
   return (
     <tr>
       <td>{index + 1}</td>
@@ -9,6 +9,7 @@ function FileRow({ file, handleEdit, index, deleteFile }) {
       <td>
         <button onClick={() => handleEdit(file)}>Edit</button>
         <button onClick={() => deleteFile(file.id)}>Delete</button>
+        <button onClick={() => download(file.file)}>Download</button>
       </td>
     </tr>
   );

@@ -1,6 +1,6 @@
 import FileRow from "./FileRow";
 
-function FileTable({ files, handleEdit, deleteFile }) {
+function FileTable({ files, handleEdit, deleteFile, handleDownload }) {
   return (
     <table>
       <thead>
@@ -21,6 +21,7 @@ function FileTable({ files, handleEdit, deleteFile }) {
             index={index}
             handleEdit={handleEdit}
             deleteFile={deleteFile}
+            download={handleDownload}
           />
         ))}
       </tbody>
