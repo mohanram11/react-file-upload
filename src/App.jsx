@@ -76,6 +76,7 @@ function App() {
     a.download = file.name;
     a.click();
     URL.revokeObjectURL(url);
+    console.log(file);
   }
 
   return (
@@ -95,7 +96,7 @@ function App() {
         files={files}
         handleEdit={handleEdit}
         deleteFile={deleteFile}
-        download={handleDownload}
+        handleDownload={handleDownload}
       />
     </div>
   );

@@ -21,7 +21,7 @@ function FileTable({ files, handleEdit, deleteFile, handleDownload }) {
             index={index}
             handleEdit={handleEdit}
             deleteFile={deleteFile}
-            download={handleDownload}
+            handleDownload={handleDownload}
           />
         ))}
       </tbody>
